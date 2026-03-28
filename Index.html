@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maniyar Footwear - Online Shop</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; }
+        header { background: #222; color: white; padding: 1rem; text-align: center; }
+        .container { display: flex; padding: 20px; gap: 20px; flex-wrap: wrap; }
+        
+        /* Product Card Style */
+        .product-card { background: white; padding: 15px; border-radius: 8px; width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .product-card img { width: 100%; border-radius: 5px; }
+        .price { color: #27ae60; font-weight: bold; font-size: 1.2rem; }
+        button { background: #e67e22; color: white; border: none; padding: 10px; cursor: pointer; width: 100%; border-radius: 5px; margin-top: 10px; }
+        
+        /* Admin Section */
+        .admin-panel { background: #ddd; padding: 20px; margin: 20px; border-radius: 8px; }
+        input { margin: 5px 0; padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 4px; }
+        
+        /* Cart Style */
+        .cart-section { background: white; padding: 20px; margin: 20px; border-top: 3px solid #222; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>MANIAR FOOTWEAR</h1>
+    <p>Premium Quality Shoes & Chappals</p>
+</header>
+
+<div class="admin-panel">
+    <h3>Add New Product (Admin Only)</h3>
+    <input type="text" id="pName" placeholder="Shoe Name (e.g. Sports Sneaker)">
+    <input type="number" id="pPrice" placeholder="Price (INR)">
+    <input type="text" id="pImage" placeholder="Image Link (URL)">
+    <button onclick="addProduct()">List This Shoe</button>
+</div>
+
+<div class="container" id="productGrid">
+    </div>
+
+<div class="cart-section">
+    <h2>Shopping Cart</h2>
+    <ul id="cartItems"></ul>
+    <p><strong>Total: ₹<span id="totalPrice">0</span></strong></p>
+    
+    <hr>
+    <h3>Delivery Address & Order</h3>
+    <input type="text" placeholder="Full Name">
+    <input type="text" placeholder="Full Address (House No, Area, Pune)">
+    <input type="tel" placeholder="Phone Number">
+    <button style="background: #27ae60;" onclick="alert('Order Placed Successfully!')">Buy Now (Cash on Delivery)</button>
+</div>
+
+<script>
+    let products = [
+        { name: "Classic Formal", price: 1299, img: "https://via.placeholder.com/150" },
+        { name: "Running Pro", price: 1800, img: "https://via.placeholder.com/150" }
+    ];
+    let cart = [];
+
+    function displayProducts() {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = '';
+        products.forEach((p, index) => {
+            grid.innerHTML += `
+                <div class="product-card">
+                    <img src="${p.img}" alt="shoe">
+                    <h4>${p.name}</h4>
+                    <p class="price">₹${p.price}</p>
+                    <button onclick="addToCart(${index})">Add to Cart</button>
+                </div>
+            `;
+        });
+    }
+
+    function addProduct() {
+        const name = document.getElementById('pName').value;
+        const price = document.getElementById('pPrice').value;
+        const img = document.getElementById('pImage').value || "https://via.placeholder.com/150";
+        
+        if(name && price) {
+            products.push({ name, price: parseInt(price), img });
+            displayProducts();
+            alert("Naya product list ho gaya!");
+        }
+    }
+
+    function addToCart(index) {
+        cart.push(products[index]);
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartList = document.getElementById('cartItems');
+        const totalDisp = document.getElementById('totalPrice');
+        cartList.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+            cartList.innerHTML += `<li>${item.name} - ₹${item.price}</li>`;
+            total += item.price;
+        });
+        totalDisp.innerText = total;
+    }
+
+    displayProducts();
+</script>
+
+</body>
+</html>
